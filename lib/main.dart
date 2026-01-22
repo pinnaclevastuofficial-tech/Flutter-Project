@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'api.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'api.dart';
+import 'auth_screen.dart';
+// import 'app_router.dart';
+import 'root_gate.dart';
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  await Supabase.initialize(
+    url: 'https://dvrqyceccshqlceblycy.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2cnF5Y2VjY3NocWxjZWJseWN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NzYyMjMsImV4cCI6MjA4NDE1MjIyM30.YDTPMLTXHtsHiOgb8BxuxlNRqiwO0FtkbYeWv8ajvHY',
+  );
+
   runApp(const VastuApp());
 }
 
@@ -15,7 +25,25 @@ class VastuApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Vastu AI',
-      home: const ChatScreen(),
+      home: const RootGate(),
+
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: const Color(0xFF2E6BE6),
+        scaffoldBackgroundColor: const Color(0xFFF6F8FC),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Color(0xFFE7EEF9)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Color(0xFFE7EEF9)),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -34,8 +62,11 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<Map<String, String>> messages = [];
   bool loading = false;
 
-  // Temporary user id (later from Supabase login)
-  final String userId = "11111111-1111-1111-1111-111111111111";
+  /// Uses Supabase user id if logged in, otherwise fallback dummy id (so chat still works).
+  String get userId {
+    final user = Supabase.instance.client.auth.currentUser;
+    return user?.id ?? "11111111-1111-1111-1111-111111111111";
+  }
 
   Future<void> send() async {
     final text = controller.text.trim();
@@ -59,7 +90,9 @@ class _ChatScreenState extends State<ChatScreen> {
         messages.add({"role": "assistant", "text": "ERROR: $e"});
       });
     } finally {
-      setState(() => loading = false);
+      if (mounted) {
+        setState(() => loading = false);
+      }
     }
   }
 
@@ -91,6 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: const Text("Vastu AI Chat"),
         actions: [
+          // Backend health check
           IconButton(
             icon: const Icon(Icons.health_and_safety),
             onPressed: () async {
@@ -102,9 +136,41 @@ class _ChatScreenState extends State<ChatScreen> {
                 );
               } catch (e) {
                 if (!mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Backend error: $e")),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text("Backend error: $e")));
+              }
+            },
+          ),
+
+          // Show Supabase user
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              final user = Supabase.instance.client.auth.currentUser;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "Supabase user: ${user?.id ?? "NOT LOGGED IN"}",
+                  ),
+                ),
+              );
+            },
+          ),
+
+          // Login button
+          // Login / Account button (permanent email+password)
+          IconButton(
+            icon: const Icon(Icons.lock),
+            onPressed: () async {
+              final ok = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AuthScreen()),
+              );
+
+              if (!mounted) return;
+              if (ok == true) {
+                setState(() {}); // refresh UI after login/logout
               }
             },
           ),
@@ -140,10 +206,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: send,
-                  icon: const Icon(Icons.send),
-                ),
+                IconButton(onPressed: send, icon: const Icon(Icons.send)),
               ],
             ),
           ),
