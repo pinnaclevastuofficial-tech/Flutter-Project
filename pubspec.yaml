@@ -31,10 +31,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  http: ^1.2.2
+  http: ^1.2.0
   supabase_flutter: ^2.8.0
   cupertino_icons: ^1.0.8
   video_player: ^2.9.2
+  
 
 dev_dependencies:
   flutter_test:

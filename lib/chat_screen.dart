@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'api.dart';
+import '../config/app_config.dart';
+import 'services/pdf_chat_service.dart';
+
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -52,11 +55,18 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToBottom();
 
     try {
-      final res = await api.genericChat(userId: userId, message: text);
+      final res = await api.genericChat(
+        userId: userId,
+        message: text,
+        sourceId: AppConfig.sourceId, // 🔥 PDF LINKED HERE
+      );
       final answer = (res["answer"] ?? "").toString();
 
       setState(() {
-        messages.add({"role": "assistant", "text": answer.isEmpty ? "…" : answer});
+        messages.add({
+          "role": "assistant",
+          "text": answer.isEmpty ? "…" : answer,
+        });
       });
     } catch (e) {
       setState(() {
@@ -88,7 +98,9 @@ class _ChatScreenState extends State<ChatScreen> {
             bottomRight: Radius.circular(isUser ? 4 : 14),
           ),
           border: Border.all(
-            color: isUser ? cs.primary.withOpacity(0.15) : const Color(0xFFE6ECF5),
+            color: isUser
+                ? cs.primary.withOpacity(0.15)
+                : const Color(0xFFE6ECF5),
           ),
           boxShadow: [
             BoxShadow(
@@ -179,14 +191,14 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final h = await api.health();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Backend: ${h["status"]}")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Backend: ${h["status"]}")));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Backend error: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Backend error: $e")));
     }
   }
 
@@ -206,18 +218,15 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: const Icon(Icons.health_and_safety),
             onPressed: _healthCheck,
           ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: _showUserSnack,
-          ),
+          IconButton(icon: const Icon(Icons.person), onPressed: _showUserSnack),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await Supabase.instance.client.auth.signOut();
               if (!mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Logged out")),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text("Logged out")));
             },
           ),
         ],

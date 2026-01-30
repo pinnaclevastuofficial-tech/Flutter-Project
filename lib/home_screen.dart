@@ -104,7 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
                     child: _TopBar(
                       title: "Pinnacle Vastu",
-                      subtitle: user?.email ?? "Modern Vastu • Courses • Remedies",
+                      subtitle:
+                          user?.email ?? "Modern Vastu • Courses • Remedies",
                       onMenu: () {},
                       onLogout: () async =>
                           Supabase.instance.client.auth.signOut(),
@@ -116,7 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 6, 16, 12),
                     child: _SearchBar(
-                      hint: "Search: courses, remedies, consultants, reports...",
+                      hint:
+                          "Search: courses, remedies, consultants, reports...",
                       onTap: () {},
                     ),
                   ),
@@ -135,19 +137,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (context, index) {
                                 final active = index == _activeIndex;
                                 return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                  ),
                                   child: _VideoHeroCard(
                                     controller: _vControllers[index],
                                     active: active,
-                                    badge: index == 0 ? "UPCOMING COURSE" : "FEATURED",
+                                    badge: index == 0
+                                        ? "UPCOMING COURSE"
+                                        : "FEATURED",
                                     title: index == 0
                                         ? "Advance Vastu Course"
                                         : "All Vastu Solutions in One App",
                                     subtitle: index == 0
                                         ? "45 Devtas • Business Vastu • Industrial"
                                         : "Courses • Consultations • Remedies • Reports",
-                                    accent: index == 0 ? brandOrange : brandBlue,
+                                    accent: index == 0
+                                        ? brandOrange
+                                        : brandBlue,
                                     onPrimary: () {
                                       if (index == 0) {
                                         // TODO: open course page
@@ -166,16 +173,47 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+                    child: _WideCTA(
+                      title: "Start a New Project",
+                      subtitle:
+                          "Create House/Office case & analyze step-by-step",
+                      left: brandBlue,
+                      right: brandOrange,
+                      icon: Icons.home_work_outlined,
+                      onTap: () {},
+                    ),
+                  ),
+                ),
+                //
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                     child: _QuickRow(
                       items: [
-                        _QuickItem("45 Devtas", Icons.grid_view_rounded, brandBlue),
-                        _QuickItem("Industrial", Icons.factory_outlined, brandOrange),
-                        _QuickItem("Daily Tips", Icons.lightbulb_outline, const Color(0xFF7C3AED)),
-                        _QuickItem("Reports", Icons.description_outlined, const Color(0xFF0E9384)),
+                        _QuickItem(
+                          "45 Devtas",
+                          Icons.grid_view_rounded,
+                          brandBlue,
+                        ),
+                        _QuickItem(
+                          "Industrial",
+                          Icons.factory_outlined,
+                          brandOrange,
+                        ),
+                        _QuickItem(
+                          "Daily Tips",
+                          Icons.lightbulb_outline,
+                          const Color(0xFF7C3AED),
+                        ),
+                        _QuickItem(
+                          "Reports",
+                          Icons.description_outlined,
+                          const Color(0xFF0E9384),
+                        ),
                       ],
                       onTap: (label) {
                         // TODO: route
@@ -194,44 +232,43 @@ class _HomeScreenState extends State<HomeScreen> {
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                   sliver: SliverGrid(
-                    delegate: SliverChildListDelegate(
-                      [
-                        _ServiceCard(
-                          title: "Courses",
-                          subtitle: "Learn from experts",
-                          icon: Icons.school_outlined,
-                          tint: brandBlue,
-                          onTap: () {},
+                    delegate: SliverChildListDelegate([
+                      _ServiceCard(
+                        title: "Courses",
+                        subtitle: "Learn from experts",
+                        icon: Icons.school_outlined,
+                        tint: brandBlue,
+                        onTap: () {},
+                      ),
+                      _ServiceCard(
+                        title: "Remedies",
+                        subtitle: "Easy solutions",
+                        icon: Icons.healing_outlined,
+                        tint: brandOrange,
+                        onTap: () {},
+                      ),
+                      _ServiceCard(
+                        title: "Consultants",
+                        subtitle: "Book guidance",
+                        icon: Icons.support_agent_outlined,
+                        tint: const Color(0xFF7C3AED),
+                        onTap: () {},
+                      ),
+                      _ServiceCard(
+                        title: "Reports",
+                        subtitle: "Premium analysis",
+                        icon: Icons.assessment_outlined,
+                        tint: const Color(0xFF0E9384),
+                        onTap: () {},
+                      ),
+                    ]),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 1.10,
                         ),
-                        _ServiceCard(
-                          title: "Remedies",
-                          subtitle: "Easy solutions",
-                          icon: Icons.healing_outlined,
-                          tint: brandOrange,
-                          onTap: () {},
-                        ),
-                        _ServiceCard(
-                          title: "Consultants",
-                          subtitle: "Book guidance",
-                          icon: Icons.support_agent_outlined,
-                          tint: const Color(0xFF7C3AED),
-                          onTap: () {},
-                        ),
-                        _ServiceCard(
-                          title: "Reports",
-                          subtitle: "Premium analysis",
-                          icon: Icons.assessment_outlined,
-                          tint: const Color(0xFF0E9384),
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 1.10,
-                    ),
                   ),
                 ),
 
@@ -272,15 +309,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 12),
 
-                        _WideCTA(
-                          title: "Start a New Project",
-                          subtitle: "Create House/Office case & analyze step-by-step",
-                          left: brandBlue,
-                          right: brandOrange,
-                          icon: Icons.home_work_outlined,
-                          onTap: () {},
-                        ),
-
                         const SizedBox(height: 110),
                       ],
                     ),
@@ -320,8 +348,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: const Icon(Icons.smart_toy_outlined,
-                    color: Colors.white, size: 30),
+                child: const Icon(
+                  Icons.smart_toy_outlined,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
             ),
           ),
@@ -345,10 +376,7 @@ class _PremiumBackground extends StatelessWidget {
           child: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFFF3F6FF),
-                  Color(0xFFFFF5EC),
-                ],
+                colors: [Color(0xFFF3F6FF), Color(0xFFFFF5EC)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -423,20 +451,24 @@ class _TopBar extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title,
-                  style: const TextStyle(
-                      fontSize: 16.8,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF101828))),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16.8,
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xFF101828),
+                ),
+              ),
               const SizedBox(height: 3),
               Text(
                 subtitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                    fontSize: 12.6,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF667085)),
+                  fontSize: 12.6,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF667085),
+                ),
               ),
             ],
           ),
@@ -471,7 +503,7 @@ class _IconPill extends StatelessWidget {
               color: Colors.black.withOpacity(0.06),
               blurRadius: 18,
               offset: const Offset(0, 12),
-            )
+            ),
           ],
         ),
         child: Icon(icon, color: const Color(0xFF1D2939)),
@@ -504,7 +536,7 @@ class _SearchBar extends StatelessWidget {
               color: Colors.black.withOpacity(0.06),
               blurRadius: 18,
               offset: const Offset(0, 12),
-            )
+            ),
           ],
         ),
         child: Row(
@@ -515,8 +547,9 @@ class _SearchBar extends StatelessWidget {
               child: Text(
                 hint,
                 style: const TextStyle(
-                    color: Color(0xFF667085),
-                    fontWeight: FontWeight.w600),
+                  color: Color(0xFF667085),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             Container(
@@ -535,11 +568,12 @@ class _SearchBar extends StatelessWidget {
               child: const Text(
                 "Search",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 12),
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 12,
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -626,12 +660,15 @@ class _VideoHeroCard extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.16),
                         borderRadius: BorderRadius.circular(999),
                         border: Border.all(
-                            color: Colors.white.withOpacity(0.25)),
+                          color: Colors.white.withOpacity(0.25),
+                        ),
                       ),
                       child: Text(
                         badge,
@@ -651,10 +688,13 @@ class _VideoHeroCard extends StatelessWidget {
                         color: Colors.white.withOpacity(0.16),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                            color: Colors.white.withOpacity(0.25)),
+                          color: Colors.white.withOpacity(0.25),
+                        ),
                       ),
-                      child: Icon(Icons.play_arrow_rounded,
-                          color: Colors.white.withOpacity(0.95)),
+                      child: Icon(
+                        Icons.play_arrow_rounded,
+                        color: Colors.white.withOpacity(0.95),
+                      ),
                     ),
                   ],
                 ),
@@ -692,7 +732,9 @@ class _VideoHeroCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 10),
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
                         decoration: BoxDecoration(
                           color: accent.withOpacity(0.92),
                           borderRadius: BorderRadius.circular(14),
@@ -701,7 +743,7 @@ class _VideoHeroCard extends StatelessWidget {
                               color: accent.withOpacity(0.35),
                               blurRadius: 18,
                               offset: const Offset(0, 12),
-                            )
+                            ),
                           ],
                         ),
                         child: Row(
@@ -716,8 +758,11 @@ class _VideoHeroCard extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 8),
-                            Icon(Icons.arrow_forward_rounded,
-                                color: Colors.white, size: 18),
+                            Icon(
+                              Icons.arrow_forward_rounded,
+                              color: Colors.white,
+                              size: 18,
+                            ),
                           ],
                         ),
                       ),
@@ -746,9 +791,7 @@ class _SkeletonHero extends StatelessWidget {
         borderRadius: BorderRadius.circular(26),
         border: Border.all(color: const Color(0xFFE7EEFF)),
       ),
-      child: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      child: const Center(child: CircularProgressIndicator()),
     );
   }
 }
@@ -794,7 +837,7 @@ class _QuickRow extends StatelessWidget {
                     color: Colors.black.withOpacity(0.06),
                     blurRadius: 20,
                     offset: const Offset(0, 14),
-                  )
+                  ),
                 ],
               ),
               child: Row(
@@ -848,17 +891,23 @@ class _SectionTitle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title,
-              style: const TextStyle(
-                  fontSize: 16.6,
-                  fontWeight: FontWeight.w900,
-                  color: _HomeScreenState.textDark)),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16.6,
+              fontWeight: FontWeight.w900,
+              color: _HomeScreenState.textDark,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(subtitle,
-              style: const TextStyle(
-                  fontSize: 12.6,
-                  fontWeight: FontWeight.w600,
-                  color: _HomeScreenState.textMuted)),
+          Text(
+            subtitle,
+            style: const TextStyle(
+              fontSize: 12.6,
+              fontWeight: FontWeight.w600,
+              color: _HomeScreenState.textMuted,
+            ),
+          ),
         ],
       ),
     );
@@ -892,10 +941,7 @@ class _ServiceCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
           gradient: LinearGradient(
-            colors: [
-              Colors.white.withOpacity(0.92),
-              tint.withOpacity(0.06),
-            ],
+            colors: [Colors.white.withOpacity(0.92), tint.withOpacity(0.06)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -922,17 +968,23 @@ class _ServiceCard extends StatelessWidget {
               child: Icon(icon, color: tint),
             ),
             const Spacer(),
-            Text(title,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 14.8,
-                    color: _HomeScreenState.textDark)),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 14.8,
+                color: _HomeScreenState.textDark,
+              ),
+            ),
             const SizedBox(height: 4),
-            Text(subtitle,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12.5,
-                    color: _HomeScreenState.textMuted)),
+            Text(
+              subtitle,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 12.5,
+                color: _HomeScreenState.textMuted,
+              ),
+            ),
           ],
         ),
       ),
@@ -993,22 +1045,30 @@ class _MiniTool extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 14,
-                          color: _HomeScreenState.textDark)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 14,
+                      color: _HomeScreenState.textDark,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(subtitle,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.5,
-                          color: _HomeScreenState.textMuted)),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12.5,
+                      color: _HomeScreenState.textMuted,
+                    ),
+                  ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded,
-                color: _HomeScreenState.textMuted),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: _HomeScreenState.textMuted,
+            ),
           ],
         ),
       ),
@@ -1072,18 +1132,24 @@ class _WideCTA extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15.5)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 15.5,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(subtitle,
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.88),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.5,
-                          height: 1.25)),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.88),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12.5,
+                      height: 1.25,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -1093,8 +1159,10 @@ class _WideCTA extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Icon(Icons.arrow_forward_rounded,
-                  color: Color(0xFF101828)),
+              child: const Icon(
+                Icons.arrow_forward_rounded,
+                color: Color(0xFF101828),
+              ),
             ),
           ],
         ),

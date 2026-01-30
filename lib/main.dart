@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'api.dart';
 import 'auth_screen.dart';
+import 'config/app_config.dart';
+
 // import 'app_router.dart';
 import 'root_gate.dart';
 
@@ -79,7 +81,12 @@ class _ChatScreenState extends State<ChatScreen> {
     controller.clear();
 
     try {
-      final res = await api.genericChat(userId: userId, message: text);
+      final res = await api.genericChat(
+        userId: userId,
+        message: text,
+        sourceId: AppConfig.sourceId,
+      );
+
       final answer = (res["answer"] ?? "").toString();
 
       setState(() {
